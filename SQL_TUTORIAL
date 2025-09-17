@@ -1,0 +1,238 @@
+SQL is a standard language for storing, manipulating and retrieving data in databases.
+Structured Query Language
+RDBMS is the basis for SQL, and for all modern database systems such as MS SQL Server, IBM DB2, Oracle, MySQL, and Microsoft Access.
+The data in RDBMS is stored in database objects called tables. A table is a collection of related data entries and it consists of columns and rows.
+SQL keywords are not case sensitive
+
+# Some of The Most Important SQL Commands
+SELECT - extracts data from a database
+UPDATE - updates data in a database
+DELETE - deletes data from a database
+INSERT INTO - inserts new data into a database
+CREATE DATABASE - creates a new database
+ALTER DATABASE - modifies a database
+CREATE TABLE - creates a new table
+ALTER TABLE - modifies a table
+DROP TABLE - deletes a table
+CREATE INDEX - creates an index (search key)
+DROP INDEX - deletes an index
+
+# SELECT
+- used to select data from database
+   -> SELECT column1, column2, ...
+      FROM table_name;
+- if you want to select all the columns then use 
+     -> SELECT * from table_name
+
+# SELECT DISTINCT
+- used to return only distinct values
+  -> SELECT DISTINCT column1, column2, ...
+      FROM table_name;
+
+# COUNT DISTINCT
+- we can return count of distinct values
+  -> SELECT COUNT(DISTINCT Country) FROM Customers;
+
+# WHERE
+- used to filter records
+  ->SELECT column1, column2, ...
+    FROM table_name
+    WHERE condition;
+- following operator can be used with where clause:
+=	Equal	
+>	Greater than	
+<	Less than	
+>=	Greater than or equal	
+<=	Less than or equal	
+<>	Not equal. Note: In some versions of SQL this operator may be written as !=	
+BETWEEN	Between a certain range	
+LIKE	Search for a pattern	
+IN	To specify multiple possible values for a column
+
+*****- Suppose you give SELECT * FROM worker WHERE name LIKE’%i’ then it will give all the names having i at any place in the name like in 1st place or second place like this but if we give ‘_i” then means i ke pehle ek hi character aaygaaa…means i should be at second place .
+suppose we give ‘_ia_’ means i ke pehle ek character aur a ke baad ek character jis bhi name hai vhi output hoga ******
+
+# ORDER BY 
+- sort values in ascending or descending order
+  -> SELECT column1, column2, ...
+      FROM table_name
+      ORDER BY column1, column2, ... ASC|DESC;
+- for string values order by keyword will work alphabetically
+- order by several columns: SELECT * FROM Customers ORDER BY Country, CustomerName;
+- order by bothasc and desc: SELECT * FROM Customers ORDER BY Country ASC, CustomerName DESC;
+
+# AND
+- where clause can have one or many AND operators
+  -> SELECT column1, column2, ...
+      FROM table_name
+      WHERE condition1 AND condition2 AND condition3 ...;
+- combining AND and OR operators: SELECT * FROM Customers WHERE Country = 'Spain' AND (CustomerName LIKE 'G%' OR CustomerName LIKE 'R%');
+
+# NOT
+- used to give oppoite result
+  -> SELECT column1, column2, ...
+      FROM table_name
+      WHERE NOT condition;
+- variations of not:
+- not like: SELECT * FROM Customers WHERE CustomerName NOT LIKE 'A%';
+- not between: SELECT * FROM Customers WHERE CustomerID NOT BETWEEN 10 AND 60;
+- not in: SELECT * FROM Customers WHERE City NOT IN ('Paris', 'London');
+- not greater than: SELECT * FROM Customers WHERE NOT CustomerID > 50;
+- not less than: SELECT * FROM Customers WHERE NOT CustomerId < 50;
+
+# INSERT INTO
+- two ways to write this:
+INSERT INTO table_name (column1, column2, column3, ...)
+VALUES (value1, value2, value3, ...);
+OR
+ If you are adding values for all the columns of the table, you do not need to specify the column names in the SQL query. However, make sure the order of the values is in the same order as the columns in the table
+-> INSERT INTO table_name
+VALUES (value1, value2, value3, ...);
+
+# NULL VALUES
+- Afield with no value is a null value
+- isnull test: SELECT column_names FROM table_name WHERE column_name IS NULL;
+- isnotnull test: SELECT column_names FROM table_name WHERE column_name IS NOT NULL;
+
+# UPDATE
+- used to modify existing records of table
+  -> UPDATE table_name
+      SET column1 = value1, column2 = value2, ...
+      WHERE condition;
+- its where clause that determines how many records will be updated
+- if you omit where all clause will be updated !!!!!
+
+# DELETE
+- used to delete existing records in table
+-> DELETE FROM table_name WHERE condition;
+- delete all records: DELETE FROM table_name; will not remove memory of table
+- delete a whole table : DROP TABLE table_name ; will remove memory of table
+
+# SELECT TOP Clause
+- The SELECT TOP clause is used to specify the number of records to return.
+-The SELECT TOP clause is useful on large tables with thousands of records. Returning a large number of records can impact performance.
+- Select only the first 3 records of the Customers table: SELECT TOP 3 * FROM Customers;
+!!!!Not all database systems support the SELECT TOP clause. MySQL supports the LIMIT clause to select a limited number of records, while Oracle uses FETCH FIRST n ROWS ONLY and ROWNUM.!!!!
+- to select top 50% : SELECT TOP 50 PERCENT * FROM Customers;
+- you can add where and order by clauses also
+
+# AGGREGAT FUNCTIONS:
+The most commonly used SQL aggregate functions are:
+MIN() - returns the smallest value within the selected column
+-> SELECT MIN(Price)
+    FROM Products;
+MAX() - returns the largest value within the selected column
+-> SELECT MAX(Price)
+  FROM Products;
+COUNT() - returns the number of rows in a set
+SUM() - returns the total sum of a numerical column
+AVG() - returns the average value of a numerical column
+
+
+- use the MIN() function and the GROUP BY clause, to return the smallest price for each category in the Products table:  SELECT MIN(Price) AS SmallestPrice, CategoryID FROM Products GROUP BY CategoryID;
+- all the other aggregat functions can be used similarly with where griup by distinct and many other ways which you will inderstand more by solving questions
+
+# LIKE
+strats with a then % will be at the end : LIKE a%
+ends with a then % will be at front :   LIKE %a
+in between : %a%
+starts with L has a single wild character nd then nd and then two wide character : LIKE L_nd__
+The [] wildcard returns a result if any of the characters inside gets a match: starting with either b or s or p : LIKE [bsp]%
+The - wildcard allows you to specify a range of characters inside the [] wildcard: starting with "a", "b", "c", "d", "e" or "f": : LIKE [a-f]%
+
+# JOIN
+- A JOIN clause is used to combine rows from two or more tables, based on a related column between them.
+SELECT Orders.OrderID, Customers.CustomerName, Orders.OrderDate
+FROM Orders
+INNER JOIN Customers ON Orders.CustomerID=Customers.CustomerID;
+- Here are the different types of the JOINs in SQL:
+(INNER) JOIN: Returns records that have matching values in both tables
+LEFT (OUTER) JOIN: Returns all records from the left table, and the matched records from the right table
+RIGHT (OUTER) JOIN: Returns all records from the right table, and the matched records from the left table
+FULL (OUTER) JOIN: Returns all records when there is a match in either left or right table
+
+- A self join is a regular join, but the table is joined with itself.
+- SELECT column_name(s)
+FROM table1 T1, table1 T2
+WHERE condition;
+- table t1 nd t2 are different aliases for same table
+
+# UNION 
+- UNION operator is used to combine the result-set of two or more SELECT statements.
+- automatically removes duplicate rows
+-> SELECT column_name(s) FROM table1
+UNION
+SELECT column_name(s) FROM table2;
+- if required you can also use where clause
+
+# UNION ALL
+- similar to union but it includes duplicates too
+
+# GROUP BY
+- The GROUP BY statement groups rows that have the same values into summary rows, like "find the number of customers in each country".
+- The GROUP BY statement is often used with aggregate functions (COUNT(), MAX(), MIN(), SUM(), AVG()) to group the result-set by one or more columns.
+
+# HAVING
+- having clause was added because where can not be used with aggregate functions
+- SELECT column_name(s)
+  FROM table_name
+  WHERE condition
+  GROUP BY column_name(s)
+  HAVING condition
+  ORDER BY column_name(s);
+
+# EXISTS
+- The EXISTS operator is used to test for the existence of any record in a subquery.
+- The EXISTS operator returns TRUE if the subquery returns one or more records.
+SELECT column_name(s)
+FROM table_name
+WHERE EXISTS
+(SELECT column_name FROM table_name WHERE condition);
+
+# ALL
+The ALL operator:
+returns a boolean value as a result
+returns TRUE if ALL of the subquery values meet the condition
+is used with SELECT, WHERE and HAVING statements
+ALL means that the condition will be true only if the operation is true for all values in the range. 
+SELECT column_name(s)
+FROM table_name
+WHERE column_name operator ALL
+  (SELECT column_name
+  FROM table_name
+  WHERE condition);
+- lly, with ANY
+
+# SELECT INTO
+- copies data from one table into another table
+SELECT column1, column2, column3, ...
+INTO newtable [IN externaldb]
+FROM oldtable
+WHERE condition;
+
+# INSERT INTO SELECT
+The INSERT INTO SELECT statement copies data from one table and inserts it into another table.
+The INSERT INTO SELECT statement requires that the data types in source and target tables match.
+Note: The existing records in the target table are unaffected.
+INSERT INTO table2 (column1, column2, column3, ...)
+SELECT column1, column2, column3, ...
+FROM table1
+WHERE condition;
+
+# CASE
+CASE
+    WHEN condition1 THEN result1
+    WHEN condition2 THEN result2
+    WHEN conditionN THEN resultN
+    ELSE result
+END;
+
+# STORED PROCEDURE
+A stored procedure is a prepared SQL code that you can save, so the code can be reused over and over again.
+So if you have an SQL query that you write over and over again, save it as a stored procedure, and then just call it to execute it.
+You can also pass parameters to a stored procedure, so that the stored procedure can act based on the parameter value(s) that is passed.
+CREATE PROCEDURE procedure_name
+AS
+sql_statement
+GO;
+EXEC procedure_name; # EXECUTE STORED PROCEDURE
